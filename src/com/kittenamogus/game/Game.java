@@ -18,6 +18,7 @@ public class Game {
 	Cell[] [] cells;
 
 	boolean firstClick	=	false;
+	boolean gameRunning	=	false;
 
 	public Game() {
 		this.graphics	=	new Graphics( COL, ROW, TITLE );
@@ -29,7 +30,7 @@ public class Game {
 		this.cells = new Cell[ ROW ][ COL ];
 		for ( int y=0; y<ROW; y++ ) {
 			for ( int x=0; x<COL; x++ ) {
-				Cell cell = new Cell( "#", x, y );
+				Cell cell = new Cell( "", x, y );
 				
 				this.cells[ y ][ x ] = cell;
 				cell.configureButton();
@@ -70,21 +71,71 @@ public class Game {
 		}
 	}
 
+	private void restartGame() {
+		for ( Cell[] row : this.cells ) {
+			for ( Cell cell : row ) {
+				cell.reset();
+			}
+		}
+
+		this.firstClick = true;
+		this.gameRunning = true;
+	}
+
 	// Game
 	private void buttonEventListener( ActionEvent e ) {
 		Cell cell = (Cell) e.getSource();
 
-		this.openCell( cell );
+		if (! this.gameRunning ) {
+			this.restartGame();
+		}
+
 
 		if ( this.firstClick ) {
 			this.firstClick = false;
 			this.genMines( cell );
 		}
-	} 
+		this.openCell( cell );
+	}
+
+	private Cell[] getNeiborgs( Cell cell ) {
+		Cell[] neibs = new Cell[8];
+		char nlen = 0;
+
+		for ( int x=cell.x-1; x<cell.x+2; x++) {
+			if ( x < 0 || x >= COL )
+				continue;
+			for ( int y=cell.y-1; y<cell.y+2; y++ ) {
+				if ( y < 0 || y >= ROW )
+					continue;
+				if ( y == cell.y && x == cell.x )
+					continue;
+			
+			neibs[ nlen ++ ] = cells[ y ][ x ];
+			}
+		}
+
+		return neibs;
+	}
 
 	private void openCell( Cell cell ) {
 		if ( cell.openCell() ) {
 			System.out.println( "Opened mine!" );
+			this.gameRunning = false;
+		}
+
+		else if ( cell.nearMines == 0 ) {
+			this.openCellNeiborgs( cell );
+		}
+	}
+
+	private void openCellNeiborgs( Cell cell ) {
+		for ( Cell a: this.getNeiborgs( cell ) ) {
+			if ( a == null )
+				break;
+			if ( a.isOpen )
+				continue;
+			this.openCell( a );
 		}
 	}
 
@@ -93,6 +144,7 @@ public class Game {
 	public void start() {
 		this.createMap();
 		this.firstClick = true;
+		this.gameRunning = true;
 
 		this.graphics.init();
 		this.graphics.drawFull( this.cells );
