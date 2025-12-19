@@ -37,8 +37,13 @@ public class Cell extends JButton {
 		if ( this.isOpen || this.isFlag )
 			return false;
 
+		this.isOpen = true;
+
 		if ( this.isMine ) {
 			this.setText( "@" );
+		}
+		else if ( this.isFlag ) {
+			this.setText( "F" );
 		}
 		else {
 			switch ( this.nearMines ) {
