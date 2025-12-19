@@ -3,6 +3,8 @@ package com.kittenamogus.graphics;
 import javax.swing.*;
 import java.awt.*;
 
+import com.kittenamogus.game.*;
+
 
 public class Graphics {
 	int COL;
@@ -23,8 +25,10 @@ public class Graphics {
 
 	private void configureFrame() {
 		this.frame.setResizable( false );
-		this.frame.setSize( 800, 800 );
+		this.frame.setSize( 100 * COL, 100 * ROW );
 		this.frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+
+		this.frame.getContentPane().setLayout( new GridLayout( ROW, COL ) );
 
 		this.frame.setLocation(
 			1000, 200
@@ -40,6 +44,10 @@ public class Graphics {
 
 	// Public
 
+	public void addCell( Cell cell ) {
+		this.frame.getContentPane().add( cell );
+	}
+
 	public void init() {
 		this.configureFrame();
 	}
@@ -48,8 +56,12 @@ public class Graphics {
 
 	}
 
-	public void drawFull() {
-
+	public void drawFull( Cell[] [] cells ) {
+		for ( int y=0; y<ROW; y++ ) {
+			for ( int x=0; x<COL; x++ ) {
+				Cell cell = cells[ y ][ x ];
+			}
+		}
 	}
 }
 
