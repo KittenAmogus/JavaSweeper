@@ -23,6 +23,8 @@ build: $(BUILD_DIR) $(MANIFEST_FILE)
 jar: build
 	@echo "--- Creating $(JAR_NAME) ---"
 	$(JAR) -cfm $(JAR_NAME) $(MANIFEST_FILE) -C $(BUILD_DIR) .
+	@rm $(BUILD_DIR) -rf
+	@rm $(MANIFEST_FILE)
 
 run: jar
 	$(JAVA) -jar $(JAR_NAME)
