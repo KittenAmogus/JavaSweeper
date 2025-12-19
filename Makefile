@@ -2,6 +2,7 @@ JAVAC	=	javac
 JAVA	=	java
 JAR		=	jar
 
+RESOURCES	=	resources
 SRC_DIR		=	src
 BUILD_DIR	=	classes
 JAR_NAME	=	JavaSweeper.jar
@@ -22,7 +23,7 @@ build: $(BUILD_DIR) $(MANIFEST_FILE)
 
 jar: build
 	@echo "--- Creating $(JAR_NAME) ---"
-	$(JAR) -cfm $(JAR_NAME) $(MANIFEST_FILE) -C $(BUILD_DIR) .
+	$(JAR) -cfm $(JAR_NAME) $(MANIFEST_FILE) -C $(BUILD_DIR) . -C $(RESOURCES) .
 	@rm $(BUILD_DIR) -rf
 	@rm $(MANIFEST_FILE)
 

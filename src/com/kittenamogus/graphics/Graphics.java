@@ -1,6 +1,7 @@
 package com.kittenamogus.graphics;
 
 import javax.swing.*;
+import java.awt.*;
 
 
 public class Graphics {
@@ -24,6 +25,15 @@ public class Graphics {
 		this.frame.setResizable( false );
 		this.frame.setSize( 800, 800 );
 		this.frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+
+		this.frame.setLocation(
+			1000, 200
+		);
+
+		Image icon = Toolkit.getDefaultToolkit().getImage(
+			"icon.ico"
+		);
+		this.frame.setIconImage(icon);
 
 		this.frame.setVisible( true );
 	}
